@@ -1,111 +1,70 @@
-/*jshint esversion: 6 */
+export default class Slider {
 
-let vco1VolumeSlider;
-let vco1PitchSlider;
-let vco1ShapeSlider;
 
-let vco1AttackSlider;
-let vco1DecaySlider;
-let vco1SustainSlider;
-let vco1ReleaseSlider;
+    constructor(sketch, browserWidth) {
+        // this.buildSliders(sketch, browserWidth)
+        this.vco1VolumeSlider = sketch.createSlider(1, 100, 25, 1);
+        this.vco1VolumeSlider.position(Math.floor(browserWidth / 80), 80);
+        this.vco1VolumeSlider.class("slider");
 
-let vco2VolumeSlider;
-let vco2PitchSlider;
-let vco2ShapeSlider;
+        this.vco1PitchSlider = sketch.createSlider(-100, 100, 0, 1);
+        this.vco1PitchSlider.position(Math.floor(browserWidth / 80) + 50, 80);
+        this.vco1PitchSlider.class("slider");
 
-let vco2AttackSlider;
-let vco2DecaySlider;
-let vco2SustainSlider;
-let vco2ReleaseSlider;
+        this.vco1ShapeSlider = sketch.createSlider(0, 3, 0, 1);
+        this.vco1ShapeSlider.position(Math.floor(browserWidth / 80) + 100, 80);
+        this.vco1ShapeSlider.class("slider");
 
-//Filter
-let filterEGAmountSlider;
-let filterEGResonanceSlider;
+        this.vco1AttackSlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco1AttackSlider.position(Math.floor(browserWidth / 80) + 200, 80);
+        this.vco1AttackSlider.class("slider");
 
-let sliderArr = [];
+        this.vco1DecaySlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco1DecaySlider.position(Math.floor(browserWidth / 80) + 250, 80);
+        this.vco1DecaySlider.class("slider");
 
-function buildSliders() {
-    vco1VolumeSlider = createSlider(1, 100, 25, 1);
-    vco1VolumeSlider.position(Math.floor(browserWidth / 80), 80);
-    vco1VolumeSlider.class("slider");
-    sliderArr.push(vco1VolumeSlider);
+        this.vco1SustainSlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco1SustainSlider.position(Math.floor(browserWidth / 80) + 300, 80);
+        this.vco1SustainSlider.class("slider");
 
-    vco1PitchSlider = createSlider(-100, 100, 0, 1);
-    vco1PitchSlider.position(Math.floor(browserWidth / 80) + 50, 80);
-    vco1PitchSlider.class("slider");
-    sliderArr.push(vco1PitchSlider);
+        this.vco1ReleaseSlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco1ReleaseSlider.position(Math.floor(browserWidth / 80) + 350, 80);
+        this.vco1ReleaseSlider.class("slider");
 
-    vco1ShapeSlider = createSlider(0, 3, 0, 1);
-    vco1ShapeSlider.position(Math.floor(browserWidth / 80) + 100, 80);
-    vco1ShapeSlider.class("slider");
-    sliderArr.push(vco1PitchSlider);
+        this.vco2VolumeSlider = sketch.createSlider(1, 100, 25, 1);
+        this.vco2VolumeSlider.position(Math.floor(browserWidth / 80), 200);
+        this.vco2VolumeSlider.class("slider");
 
-    vco1AttackSlider = createSlider(1, 100, 20, 1);
-    vco1AttackSlider.position(Math.floor(browserWidth / 80) + 200, 80);
-    vco1AttackSlider.class("slider");
-    sliderArr.push(vco1AttackSlider);
+        this.vco2PitchSlider = sketch.createSlider(-100, 100, 0, 1);
+        this.vco2PitchSlider.position(Math.floor(browserWidth / 80) + 50, 200);
+        this.vco2PitchSlider.class("slider");
 
-    vco1DecaySlider = createSlider(1, 100, 20, 1);
-    vco1DecaySlider.position(Math.floor(browserWidth / 80) + 250, 80);
-    vco1DecaySlider.class("slider");
-    sliderArr.push(vco1DecaySlider);
+        this.vco2ShapeSlider = sketch.createSlider(0, 3, 0, 1);
+        this.vco2ShapeSlider.position(Math.floor(browserWidth / 80) + 100, 200);
+        this.vco2ShapeSlider.class("slider");
 
-    vco1SustainSlider = createSlider(1, 100, 20, 1);
-    vco1SustainSlider.position(Math.floor(browserWidth / 80) + 300, 80);
-    vco1SustainSlider.class("slider");
-    sliderArr.push(vco1SustainSlider);
+        this.vco2AttackSlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco2AttackSlider.position(Math.floor(browserWidth / 80) + 200, 200);
+        this.vco2AttackSlider.class("slider");
 
-    vco1ReleaseSlider = createSlider(1, 100, 20, 1);
-    vco1ReleaseSlider.position(Math.floor(browserWidth / 80) + 350, 80);
-    vco1ReleaseSlider.class("slider");
-    sliderArr.push(vco1ReleaseSlider);
+        this.vco2DecaySlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco2DecaySlider.position(Math.floor(browserWidth / 80) + 250, 200);
+        this.vco2DecaySlider.class("slider");
 
-    vco2VolumeSlider = createSlider(1, 100, 25, 1);
-    vco2VolumeSlider.position(Math.floor(browserWidth / 80), 200);
-    vco2VolumeSlider.class("slider");
-    sliderArr.push(vco2VolumeSlider);
+        this.vco2SustainSlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco2SustainSlider.position(Math.floor(browserWidth / 80) + 300, 200);
+        this.vco2SustainSlider.class("slider");
 
-    vco2PitchSlider = createSlider(-100, 100, 0, 1);
-    vco2PitchSlider.position(Math.floor(browserWidth / 80) + 50, 200);
-    vco2PitchSlider.class("slider");
-    sliderArr.push(vco2PitchSlider);
+        this.vco2ReleaseSlider = sketch.createSlider(1, 100, 20, 1);
+        this.vco2ReleaseSlider.position(Math.floor(browserWidth / 80) + 350, 200);
+        this.vco2ReleaseSlider.class("slider");
 
-    vco2ShapeSlider = createSlider(0, 3, 0, 1);
-    vco2ShapeSlider.position(Math.floor(browserWidth / 80) + 100, 200);
-    vco2ShapeSlider.class("slider");
-    sliderArr.push(vco2PitchSlider);
+        this.filterEGAmountSlider = sketch.createSlider(1, 100, 20, 1);
+        this.filterEGAmountSlider.position(Math.floor(browserWidth / 80, 200), 350);
+        this.filterEGAmountSlider.class("medSlider");
 
-    vco2AttackSlider = createSlider(1, 100, 20, 1);
-    vco2AttackSlider.position(Math.floor(browserWidth / 80) + 200, 200);
-    vco2AttackSlider.class("slider");
-    sliderArr.push(vco2AttackSlider);
-
-    vco2DecaySlider = createSlider(1, 100, 20, 1);
-    vco2DecaySlider.position(Math.floor(browserWidth / 80) + 250, 200);
-    vco2DecaySlider.class("slider");
-    sliderArr.push(vco2DecaySlider);
-
-    vco2SustainSlider = createSlider(1, 100, 20, 1);
-    vco2SustainSlider.position(Math.floor(browserWidth / 80) + 300, 200);
-    vco2SustainSlider.class("slider");
-    sliderArr.push(vco2SustainSlider);
-
-    vco2ReleaseSlider = createSlider(1, 100, 20, 1);
-    vco2ReleaseSlider.position(Math.floor(browserWidth / 80) + 350, 200);
-    vco2ReleaseSlider.class("slider");
-    sliderArr.push(vco2ReleaseSlider);
-
-    //filter
-    filterEGAmountSlider = createSlider(1, 100, 20, 1);
-    filterEGAmountSlider.position(Math.floor(browserWidth / 80, 200), 350);
-    filterEGAmountSlider.class("medSlider");
-    sliderArr.push(filterEGAmountSlider);
-
-    filterEGResonanceSlider = createSlider(1, 100, 20, 1);
-    filterEGResonanceSlider.position(Math.floor(browserWidth / 80, 200) + 50, 350);
-    filterEGResonanceSlider.class("medSlider");
-    sliderArr.push(filterEGResonanceSlider);
+        this.filterEGResonanceSlider = sketch.createSlider(1, 100, 20, 1);
+        this.filterEGResonanceSlider.position(Math.floor(browserWidth / 80, 200) + 50, 350);
+        this.filterEGResonanceSlider.class("medSlider");
+    }
 }
-
-
-

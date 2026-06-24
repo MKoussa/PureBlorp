@@ -1,166 +1,165 @@
 /*jshint esversion: 6 */
-let envArr = [];
-let oscArr = [];
-let envelopeCounter = 0;
-let oscillatorCounter = 0;
+import p5 from './p5/p5'
 
-let osc1;
-let osc1Env;
-let osc1WaveShape;
+export default class Oscillator {
 
-let osc1AttackLevel;
-let osc1ReleaseLevel = 0;
-let osc1Attack;
-let osc1Decay;
-let osc1Sustain;
-let osc1Release;
 
-let osc2;
-let osc2Env;
-let osc2WaveShape;
 
-let osc2AttackLevel;
-let osc2ReleaseLevel = 0;
-let osc2Attack;
-let osc2Decay;
-let osc2Sustain;
-let osc2Release;
+    constructor(sliders) {
+        this.envArr = [];
+        this.oscArr = [];
+        this.envelopeCounter = 0;
+        this.oscillatorCounter = 0;
+        this.osc1;
+        this.osc1Env;
+        this.osc1WaveShape;
+        this.osc1AttackLevel;
+        this.osc1ReleaseLevel = 0;
+        this.osc1Attack;
+        this.osc1Decay;
+        this.osc1Sustain;
+        this.osc1Release;
+        this.osc2;
+        this.osc2Env;
+        this.osc2WaveShape;
+        this.osc2AttackLevel;
+        this.osc2ReleaseLevel = 0;
+        this.osc2Attack;
+        this.osc2Decay;
+        this.osc2Sustain;
+        this.osc2Release;
+        this.maxOsc = 60;
+        this.maxEnv = 60;
+        this.sliders = sliders;
 
-let maxOsc = 60;
-let maxEnv = 60;
-
-getEnvelope = function () {
-    let tempEnv;
-    if (envArr === undefined || envArr.length == 0) {
-        for (let buildEnvArrIter = 0; buildEnvArrIter < maxEnv; buildEnvArrIter++) {
-            tempEnv = new p5.Envelope();
-            envArr.push(tempEnv);
-        }
     }
-    if (envelopeCounter > maxEnv) {
-        envelopeCounter = 0;
-        tempEnv = envArr[envelopeCounter];
+    getEnvelope() {
+        let tempEnv;
+        if (this.envArr === undefined || this.envArr.length == 0) {
+            for (let buildEnvArrIter = 0; buildEnvArrIter < this.maxEnv; buildEnvArrIter++) {
+                tempEnv = new p5.Envelope();
+                this.envArr.push(tempEnv);
+            }
+        }
+        if (this.envelopeCounter >= this.maxEnv) {
+            this.envelopeCounter = 0;
+            tempEnv = this.envArr[this.envelopeCounter];
+            return tempEnv;
+        }
+        tempEnv = this.envArr[this.envelopeCounter];
+        this.envelopeCounter++;
         return tempEnv;
     }
-    envelopeCounter++;
-    tempEnv = envArr[envelopeCounter];
-    return tempEnv;
-};
 
 
-getOscillator = function () {
-    let tempOsc;
-    if (oscArr === undefined || oscArr.length == 0) {
-        for (let buildOscArrIter = 0; buildOscArrIter < maxOsc; buildOscArrIter++) {
-            tempOsc = new p5.Oscillator();
-            oscArr.push(tempOsc);
+    getOscillator() {
+        let tempOsc;
+        if (this.oscArr === undefined || this.oscArr.length == 0) {
+            for (let buildOscArrIter = 0; buildOscArrIter < this.maxOsc; buildOscArrIter++) {
+                tempOsc = new p5.Oscillator();
+                this.oscArr.push(tempOsc);
+            }
         }
-    }
-    if (oscillatorCounter > maxOsc) {
-        oscillatorCounter = 0;
-        tempOsc = oscArr[oscillatorCounter];
+        if (this.oscillatorCounter >= this.maxOsc) {
+            this.oscillatorCounter = 0;
+            tempOsc = this.oscArr[this.oscillatorCounter];
+            tempOsc.stop();
+            return tempOsc;
+        }
+        tempOsc = this.oscArr[this.oscillatorCounter];
         tempOsc.stop();
+        this.oscillatorCounter++;
         return tempOsc;
     }
-    oscillatorCounter++;
-    tempOsc = oscArr[oscillatorCounter];
-    tempOsc.stop();
-    return tempOsc;
-};
 
 
-setOscParameters = function () {
-    osc1 = getOscillator();
-    osc2 = getOscillator();
+    setOscParameters() {
+        this.osc1 = this.getOscillator();
+        this.osc2 = this.getOscillator();
+        this.osc1Env = this.getEnvelope();
+        this.osc2Env = this.getEnvelope();
+        this.osc1AttackLevel = (this.sliders.vco1VolumeSlider.value() / 100);
+        this.osc1Attack = (this.sliders.vco1AttackSlider.value() / 100);
+        this.osc1Decay = (this.sliders.vco1DecaySlider.value() / 100);
+        this.osc1Sustain = (this.sliders.vco1SustainSlider.value() / 100);
+        this.osc1Release = (this.sliders.vco1ReleaseSlider.value() / 100);
 
-    osc1Env = getEnvelope();
-    osc2Env = getEnvelope();
+        switch (this.sliders.vco1ShapeSlider.value()) {
+            case 0:
+                this.osc1WaveShape = 'sine';
+                break;
+            case 1:
+                this.osc1WaveShape = 'triangle';
+                break;
+            case 2:
+                this.osc1WaveShape = 'sawtooth';
+                break;
+            case 3:
+                this.osc1WaveShape = 'square';
+                break;
+        }
 
-    osc1AttackLevel = (vco1VolumeSlider.value() / 100);
-    osc1Attack = (vco1AttackSlider.value() / 100);
-    osc1Decay = (vco1DecaySlider.value() / 100);
-    osc1Sustain = (vco1SustainSlider.value() / 100);
-    osc1Release = (vco1ReleaseSlider.value() / 100);
+        this.osc1Env.setADSR(this.osc1Attack, this.osc1Decay, this.osc1Sustain, this.osc1Release);
+        this.osc1Env.setRange(this.osc1AttackLevel, this.osc1ReleaseLevel);
+        this.osc1.setType(this.osc1WaveShape);
+        this.osc1.amp(this.osc1Env);
+        this.osc1.start();
+        this.osc2AttackLevel = (this.sliders.vco2VolumeSlider.value() / 100);
+        this.osc2Attack = (this.sliders.vco2AttackSlider.value() / 100);
+        this.osc2Decay = (this.sliders.vco2DecaySlider.value() / 100);
+        this.osc2Sustain = (this.sliders.vco2SustainSlider.value() / 100);
+        this.osc2Release = (this.sliders.vco2ReleaseSlider.value() / 100);
 
-    switch (vco1ShapeSlider.value()) {
-        case 0:
-            osc1WaveShape = 'sine';
-            break;
-        case 1:
-            osc1WaveShape = 'triangle';
-            break;
-        case 2:
-            osc1WaveShape = 'sawtooth';
-            break;
-        case 3:
-            osc1WaveShape = 'square';
-            break;
+        switch (this.sliders.vco2ShapeSlider.value()) {
+            case 0:
+                this.osc2WaveShape = 'sine';
+                break;
+            case 1:
+                this.osc2WaveShape = 'triangle';
+                break;
+            case 2:
+                this.osc2WaveShape = 'sawtooth';
+                break;
+            case 3:
+                this.osc2WaveShape = 'square';
+                break;
+        }
+
+        this.osc2Env.setADSR(this.osc2Attack, this.osc2Decay, this.osc2Sustain, this.osc2Release);
+        this.osc2Env.setRange(this.osc2AttackLevel, this.osc2ReleaseLevel);
+        this.osc2.setType(this.osc2WaveShape);
+        this.osc2.amp(this.osc2Env);
+        this.osc2.start();
     }
 
-    osc1Env.setADSR(osc1Attack, osc1Decay, osc1Sustain, osc1Release);
-    osc1Env.setRange(osc1AttackLevel, osc1ReleaseLevel);
 
-    osc1.setType(osc1WaveShape);
-    osc1.amp(osc1Env);
-    osc1.start();
+    buildOscillators() {
+        this.osc1 = new p5.Oscillator('sine');
+        // osc1.setType('sine');
+        this.osc1AttackLevel = (this.sliders.vco1VolumeSlider.value() / 100);
+        this.osc1Attack = (this.sliders.vco1AttackSlider.value() / 100);
+        this.osc1Decay = (this.sliders.vco1DecaySlider.value() / 100);
+        this.osc1Sustain = (this.sliders.vco1SustainSlider.value() / 100);
+        this.osc1Release = (this.sliders.vco1ReleaseSlider.value() / 100);
+        this.osc1Env = new p5.Envelope();
 
-    osc2AttackLevel = (vco2VolumeSlider.value() / 100);
-    osc2Attack = (vco2AttackSlider.value() / 100);
-    osc2Decay = (vco2DecaySlider.value() / 100);
-    osc2Sustain = (vco2SustainSlider.value() / 100);
-    osc2Release = (vco2ReleaseSlider.value() / 100);
+        this.osc1Env.setADSR(this.osc1Attack, this.osc1Decay, this.osc1Sustain, this.osc1Release);
+        this.osc1Env.setRange(this.sliders.osc1AttackLevel, this.sliders.osc1ReleaseLevel);
+        this.osc1.amp(this.osc1Env);
+        this.osc1.start();
 
-    switch (vco2ShapeSlider.value()) {
-        case 0:
-            osc2WaveShape = 'sine';
-            break;
-        case 1:
-            osc2WaveShape = 'triangle';
-            break;
-        case 2:
-            osc2WaveShape = 'sawtooth';
-            break;
-        case 3:
-            osc2WaveShape = 'square';
-            break;
+        this.osc2 = new p5.Oscillator('sine');
+        // osc2.setType('sine');
+        this.osc2AttackLevel = (this.sliders.vco2VolumeSlider.value() / 100);
+        this.osc2Attack = (this.sliders.vco2AttackSlider.value() / 100);
+        this.osc2Decay = (this.sliders.vco2DecaySlider.value() / 100);
+        this.osc2Sustain = (this.sliders.vco2SustainSlider.value() / 100);
+        this.osc2Release = (this.sliders.vco2ReleaseSlider.value() / 100);
+        this.osc2Env = new p5.Envelope();
+        this.osc2Env.setADSR(this.osc2Attack, this.osc2Decay, this.osc2Sustain, this.osc2Release);
+        this.osc2Env.setRange(this.sliders.osc2AttackLevel, this.sliders.osc2ReleaseLevel);
+        this.osc2.amp(this.osc2Env);
+        this.osc2.start();
     }
 
-    osc2Env.setADSR(osc2Attack, osc2Decay, osc2Sustain, osc2Release);
-    osc2Env.setRange(osc2AttackLevel, osc2ReleaseLevel);
-
-    osc2.setType(osc2WaveShape);
-    osc2.amp(osc2Env);
-    osc2.start();
-};
-
-
-buildOscillators = function () {
-    osc1 = new p5.Oscillator();
-    osc1.setType('sine');
-
-    osc1AttackLevel = (vco1VolumeSlider.value() / 100);
-    osc1Attack = (vco1AttackSlider.value() / 100);
-    osc1Decay = (vco1DecaySlider.value() / 100);
-    osc1Sustain = (vco1SustainSlider.value() / 100);
-    osc1Release = (vco1ReleaseSlider.value() / 100);
-    osc1Env = new p5.Envelope();
-
-    //osc1Env.setADSR(osc1Attack, osc1Decay, osc1Sustain, osc1Release);
-    osc1Env.setRange(osc1AttackLevel, osc1ReleaseLevel);
-    osc1.amp(osc1Env);
-    osc1.start();
-
-    osc2 = new p5.Oscillator();
-    osc2.setType('sine');
-    osc2AttackLevel = (vco2VolumeSlider.value() / 100);
-    osc2Attack = (vco2AttackSlider.value() / 100);
-    osc2Decay = (vco2DecaySlider.value() / 100);
-    osc2Sustain = (vco2SustainSlider.value() / 100);
-    osc2Release = (vco2ReleaseSlider.value() / 100);
-    osc2Env = new p5.Envelope();
-    osc2Env.setADSR(osc2Attack, osc2Decay, osc2Sustain, osc2Release);
-    osc2Env.setRange(osc2AttackLevel, osc2ReleaseLevel);
-    osc2.amp(osc2Env);
-    osc2.start();
-};
-
+}
