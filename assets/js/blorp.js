@@ -24,7 +24,7 @@ const s = (sketch) => {
         keyboardPositionDown = browserHeight - (Math.min(((browserWidth - 10) / 15) - 2, 50) * 4);
 
         sketch.createCanvas(browserWidth - 20, browserHeight - 20);
-        sketch.background('#23543c');
+        sketch.background('#3e0d51');
         Labels.displayLabels(sketch, browserWidth);
         sliders = new Slider(sketch, browserWidth);
         oscillators = new Oscillator(sliders);
@@ -33,7 +33,7 @@ const s = (sketch) => {
     };
 
     sketch.draw = () => {
-        sketch.background('#23543c');
+        sketch.background('#3e104a');
         sketch.cursor('CROSS'); // Draw cursor as cross
         keyboard.drawKeyboard(sketch, keyboardPositionDown, keyboardPositionRight);
     };
