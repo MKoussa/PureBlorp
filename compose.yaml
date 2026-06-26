@@ -1,0 +1,8 @@
+services:
+  web:
+    image: pureblorpimage:latest
+    ports:
+    - "4000:4000"
+    env_file: 
+    - path: ./.env
+      required: true
