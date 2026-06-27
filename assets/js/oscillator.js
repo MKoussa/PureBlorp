@@ -135,29 +135,28 @@ export default class Oscillator {
 
     buildOscillators() {
         this.osc1 = new p5.Oscillator('sine');
-        // osc1.setType('sine');
         this.osc1AttackLevel = (this.sliders.vco1VolumeSlider.value() / 100);
         this.osc1Attack = (this.sliders.vco1AttackSlider.value() / 100);
         this.osc1Decay = (this.sliders.vco1DecaySlider.value() / 100);
         this.osc1Sustain = (this.sliders.vco1SustainSlider.value() / 100);
         this.osc1Release = (this.sliders.vco1ReleaseSlider.value() / 100);
-        this.osc1Env = new p5.Envelope();
 
+        this.osc1Env = new p5.Envelope();
         this.osc1Env.setADSR(this.osc1Attack, this.osc1Decay, this.osc1Sustain, this.osc1Release);
-        this.osc1Env.setRange(this.sliders.osc1AttackLevel, this.sliders.osc1ReleaseLevel);
+        this.osc1Env.setRange(this.osc1AttackLevel, this.osc1ReleaseLevel);
         this.osc1.amp(this.osc1Env);
         this.osc1.start();
 
         this.osc2 = new p5.Oscillator('sine');
-        // osc2.setType('sine');
         this.osc2AttackLevel = (this.sliders.vco2VolumeSlider.value() / 100);
         this.osc2Attack = (this.sliders.vco2AttackSlider.value() / 100);
         this.osc2Decay = (this.sliders.vco2DecaySlider.value() / 100);
         this.osc2Sustain = (this.sliders.vco2SustainSlider.value() / 100);
         this.osc2Release = (this.sliders.vco2ReleaseSlider.value() / 100);
+
         this.osc2Env = new p5.Envelope();
         this.osc2Env.setADSR(this.osc2Attack, this.osc2Decay, this.osc2Sustain, this.osc2Release);
-        this.osc2Env.setRange(this.sliders.osc2AttackLevel, this.sliders.osc2ReleaseLevel);
+        this.osc2Env.setRange(this.osc2AttackLevel, this.osc2ReleaseLevel);
         this.osc2.amp(this.osc2Env);
         this.osc2.start();
     }
